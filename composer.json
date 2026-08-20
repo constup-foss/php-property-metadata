@@ -1,0 +1,24 @@
+{
+  "name": "constup-foss/php-property-metadata",
+  "autoload": {
+    "psr-4": {
+      "ConstupFoss\\PhpPropertyMetadata\\": "src"
+    }
+  },
+  "authors": [
+    {
+      "name": "constup",
+      "email": "286199137+constup-foss@users.noreply.github.com"
+    }
+  ],
+  "autoload-dev": {
+    "psr-4": {
+      "ConstupFoss\\PhpPropertyMetadata\\Tests\\": "tests"
+    }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "phpunit/phpunit": "^13",
+    "fakerphp/faker": "^1.24"
+  }
+}
