@@ -41,7 +41,7 @@ return $config
                 'property' => 'none'
             ]
         ],
-        'new_with_braces' => true,
+        'new_with_parentheses' => true,
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_comment' => true,
@@ -53,7 +53,7 @@ return $config
         'echo_tag_syntax' => [
             'format' => 'long'
         ],
-        'no_trailing_comma_in_singleline_array' => true,
+        'no_trailing_comma_in_singleline' => true,
         //risky 'no_unneeded_final_method' => true,
         'no_unused_imports' => true,
         'no_useless_else' => true,
@@ -75,7 +75,7 @@ return $config
         //'self_accessor' => true,
         'short_scalar_cast' => true,
         'single_import_per_statement' => false,
-        'single_blank_line_before_namespace' => true,
+        'blank_lines_before_namespace' => true,
         //'single_line_comment_style' => true,
         'single_quote' => true,
         'standardize_not_equals' => true,

@@ -1,0 +1,44 @@
+= constUP PHP Property Metadata
+:toc:
+:toclevels: 5
+
+image:https://img.shields.io/badge/PHP-8.5-blue[Static Badge]
+image:https://img.shields.io/badge/License-MIT-green[Static Badge]
+
+== Description
+
+Reusable metadata tree implementation for classes/objects and their properties in PHP.
+
+The primary purpose of this library is to provide a tree data structure that can mimic the shape of your classes and
+objects. Properties of your classes or objects can be represented as tree nodes, so you can attach metadata to each
+node during runtime.
+
+One example use case:
+
+If your property metadata is static, it's recommended to use PHP attributes to assign metadata. If you need to have
+dynamic metadata, you can use First Class Callables as attribute arguments (since PHP 8.5:
+link:https://wiki.php.net/rfc/fcc_in_const_expr[PHP RFC Wiki]). Assigning individual arguments during runtime when
+processing First Class Callables is relatively easy. Property metadata tree can be used when you need to assign
+arguments to the whole object (or a selected set of properties in it).
+
+== Installation
+
+[source]
+----
+composer require constup-foss/php-property-metadata
+----
+
+== License
+
+MIT License
+
+- License file: link:LICENSE.txt[LICENSE.txt]
+- Online version: https://opensource.org/license/mit
+
+== Supporting development
+
+If you like this library or find it useful, consider buying me a nice cup of coffee. Coffee fuels open source.
+
+image:doc/bmac.png[width=197]
+
+link:https://www.buymeacoffee.com/puEW3HvWvP[image:https://cdn.buymeacoffee.com/buttons/v2/default-green.png[width=200]]
