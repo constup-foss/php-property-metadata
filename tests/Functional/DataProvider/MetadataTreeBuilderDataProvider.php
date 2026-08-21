@@ -12,7 +12,7 @@ readonly class MetadataTreeBuilderDataProvider
     public static function provide_HappyFlow(): array
     {
         return [
-            'Simple property metadata' => [
+            'Simple node metadata' => [
                 'builderFactory' => static fn (): MetadataTreeBuilder => new MetadataTreeBuilder()
                     ->addNode('simplePropertyName', function (MetadataTreeBuilder $builder): void {
                         $builder->addMetadataNode('metadataKeyName', 'metadataKeyValue');
@@ -25,7 +25,7 @@ readonly class MetadataTreeBuilderDataProvider
                     ],
                 ],
             ],
-            'Nested property metadata' => [
+            'Nested node metadata' => [
                 'builderFactory' => static fn (): MetadataTreeBuilder => new MetadataTreeBuilder()
                     ->addNode('parentPropertyName', function (MetadataTreeBuilder $builder): void {
                         $builder->addNode('childPropertyName', function (MetadataTreeBuilder $builder): void {

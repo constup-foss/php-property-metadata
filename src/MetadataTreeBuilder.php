@@ -40,7 +40,7 @@ class MetadataTreeBuilder implements MetadataTreeBuilderInterface
     public function addNode(
         string $nodeKey,
         ?Closure $children = null
-    ): self {
+    ): static {
         $this->validatePropertyNodeName($nodeKey);
         $currentNode = $this->getCurrentNode();
 
@@ -59,7 +59,7 @@ class MetadataTreeBuilder implements MetadataTreeBuilderInterface
     public function addMetadataNode(
         string $nodeKey,
         int|float|string|bool|array|object|null $value
-    ): self {
+    ): static {
         // We are using the same validation for metadata keys as for PHP property names. This should provide enough
         // flexibility when defining metadata keys. If needed, implement a new `validateMetadataNodeName` method and use
         // it instead.
