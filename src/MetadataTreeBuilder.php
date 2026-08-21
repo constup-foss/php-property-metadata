@@ -41,7 +41,7 @@ class MetadataTreeBuilder implements MetadataTreeBuilderInterface
         string $nodeKey,
         ?Closure $children = null
     ): static {
-        $this->validatePropertyNodeName($nodeKey);
+        $this->validateNodeName($nodeKey);
         $currentNode = $this->getCurrentNode();
 
         if (!property_exists($currentNode, $nodeKey) || !is_object($currentNode->{$nodeKey})) {
@@ -60,10 +60,7 @@ class MetadataTreeBuilder implements MetadataTreeBuilderInterface
         string $nodeKey,
         int|float|string|bool|array|object|null $value
     ): static {
-        // We are using the same validation for metadata keys as for PHP property names. This should provide enough
-        // flexibility when defining metadata keys. If needed, implement a new `validateMetadataNodeName` method and use
-        // it instead.
-        $this->validatePropertyNodeName($nodeKey);
+        $this->validateNodeName($nodeKey);
         $currentNode = $this->getCurrentNode();
         $currentNode->{$nodeKey} = $value;
 
@@ -71,25 +68,23 @@ class MetadataTreeBuilder implements MetadataTreeBuilderInterface
     }
 
     /**
-     * Validate a property node name. The official regex is used for validation (available in the link).
+     * Validate node name.
+     * It is important for this validation to be more permissive than when validating a PHP property name.
      *
-     * @param string $propertyName
+     * @param string $nodeName
      *
      * @throws MetadataTreeException
      *
      * @return void
-     *
-     * @link https://www.php.net/manual/en/language.variables.basics.php
      */
-    private function validatePropertyNodeName(
-        string $propertyName,
+    private function validateNodeName(
+        string $nodeName,
     ): void {
-        if ($propertyName === '') {
+        if ($nodeName === '') {
             throw new MetadataTreeException()->emptyMetadataNodeName();
         }
 
-        // Official regex available at https://www.php.net/manual/en/language.variables.basics.php
-        if (preg_match('/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/', $propertyName) === 1) {
+        if (preg_match('/^[a-zA-Z_\x80-\xff\\\][a-zA-Z0-9_\x80-\xff\\\]*$/', $nodeName) === 1) {
             return;
         }
 

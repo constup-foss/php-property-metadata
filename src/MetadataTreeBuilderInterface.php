@@ -18,7 +18,7 @@ interface MetadataTreeBuilderInterface
     /**
      * Add a new simple node to the metadata tree.
      *
-     * @param string       $nodeKey  Validates against a regex for a valid PHP property name.
+     * @param string       $nodeKey
      * @param Closure|null $children
      *
      * @return static
@@ -31,7 +31,7 @@ interface MetadataTreeBuilderInterface
     /**
      * Add a new metadata node to the metadata tree.
      *
-     * @param string                                  $nodeKey Validates against a regex for a valid PHP property name.
+     * @param string                                  $nodeKey
      * @param int|float|string|bool|array|object|null $value
      *
      * @return static

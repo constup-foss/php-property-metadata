@@ -42,25 +42,34 @@ readonly class MetadataTreeBuilderDataProvider
                     ],
                 ],
             ],
+            'Creating node with backslash in the name. Important for creating FQN nodes.' => [
+                'builderFactory' => static fn (): MetadataTreeBuilder => new MetadataTreeBuilder()
+                    ->addNode('property\\Name'),
+                'expected' => (object)[
+                    'root' => (object)[
+                        'property\\Name' => (object)[],
+                    ],
+                ],
+            ],
         ];
     }
 
     public static function provide_ErrorFlow(): array
     {
         return [
-            'Creating property node with an empty name' => [
+            'Creating node with an empty name' => [
                 'builderFactory' => static fn (): MetadataTreeBuilder => new MetadataTreeBuilder()
                     ->addNode(''),
                 'expectedException' => MetadataTreeException::class,
                 'expectedExceptionCode' => 1004,
             ],
-            'Creating property node with invalid name. Invalid character.' => [
+            'Creating node with invalid name. Invalid character.' => [
                 'builderFactory' => static fn (): MetadataTreeBuilder => new MetadataTreeBuilder()
                     ->addNode('invalid#name'),
                 'expectedException' => MetadataTreeException::class,
                 'expectedExceptionCode' => 1005,
             ],
-            'Creating property node with invalid name. White space.' => [
+            'Creating node with invalid name. White space.' => [
                 'builderFactory' => static fn (): MetadataTreeBuilder => new MetadataTreeBuilder()
                     ->addNode('invalid name'),
                 'expectedException' => MetadataTreeException::class,

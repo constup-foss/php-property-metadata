@@ -72,27 +72,66 @@ readonly class ObjectMetadataTreeBuilderDataProvider
                     ],
                 ],
             ],
+            'Property with attribute arguments' => [
+                'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
+                    ->addPropertyNode('sampleProperty', function (ObjectMetadataTreeBuilder $builder): void {
+                        $builder->addAttributeArgumentsNode('Sample\AttributeFqn', ['sample value 01', 'sample value 02']);
+                    }),
+                'expected' => (object)[
+                    'root' => (object)[
+                        'sampleProperty' => (object)[
+                            'Sample\AttributeFqn' => (object)[
+                                'attributeArguments' => ['sample value 01', 'sample value 02'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
     public static function provide_ErrorFlow(): array
     {
         return [
-            'Creating property node with an empty name' => [
+            'Creating node with an empty name' => [
                 'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
                     ->addNode(''),
                 'expectedException' => MetadataTreeException::class,
                 'expectedExceptionCode' => 1004,
             ],
-            'Creating property node with invalid name. Invalid character.' => [
+            'Creating node with invalid name. Invalid character.' => [
                 'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
                     ->addNode('invalid#name'),
                 'expectedException' => MetadataTreeException::class,
                 'expectedExceptionCode' => 1005,
             ],
-            'Creating property node with invalid name. White space.' => [
+            'Creating node with invalid name. White space.' => [
                 'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
                     ->addNode('invalid name'),
+                'expectedException' => MetadataTreeException::class,
+                'expectedExceptionCode' => 1005,
+            ],
+            'Creating property node with empty name.' => [
+                'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
+                    ->addPropertyNode(''),
+                'expectedException' => MetadataTreeException::class,
+                'expectedExceptionCode' => 1004,
+            ],
+            'Creating property node with invalid name. Invalid character.' => [
+                'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
+                    ->addPropertyNode('invalid#name'),
+                'expectedException' => MetadataTreeException::class,
+                'expectedExceptionCode' => 1005,
+            ],
+            'Creating property node with invalid name. Backslash.' => [
+                'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
+                    ->addPropertyNode('invalid\\name'),
+                'expectedException' => MetadataTreeException::class,
+                'expectedExceptionCode' => 1005,
+            ],
+            'Creating property node with invalid name. White space.' => [
+                'builderFactory' => static fn (): ObjectMetadataTreeBuilder => new ObjectMetadataTreeBuilder()
+                    ->addPropertyNode('invalid name'),
                 'expectedException' => MetadataTreeException::class,
                 'expectedExceptionCode' => 1005,
             ],
