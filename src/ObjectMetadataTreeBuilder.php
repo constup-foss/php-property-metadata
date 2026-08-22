@@ -17,7 +17,7 @@ class ObjectMetadataTreeBuilder extends MetadataTreeBuilder implements ObjectMet
     public function addPropertyNode(
         string $propertyName,
         ?Closure $children = null
-    ): self {
+    ): static {
         $this->validatePropertyNodeName($propertyName);
 
         return $this->addNode($propertyName, $children);
@@ -31,7 +31,7 @@ class ObjectMetadataTreeBuilder extends MetadataTreeBuilder implements ObjectMet
     public function addAttributeArgumentsNode(
         string $attributeFqn,
         array $attributeArguments
-    ): self {
+    ): static {
         return $this->addNode($attributeFqn, function (ObjectMetadataTreeBuilder $builder) use ($attributeArguments): void {
             $builder->addMetadataNode('attributeArguments', $attributeArguments);
         });

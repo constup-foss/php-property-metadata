@@ -14,12 +14,12 @@ interface ObjectMetadataTreeBuilderInterface
      * @param string       $propertyName
      * @param Closure|null $children
      *
-     * @return self
+     * @return static
      */
     public function addPropertyNode(
         string $propertyName,
         ?Closure $children = null
-    ): self;
+    ): static;
 
     /**
      * Adds an attribute arguments node.
@@ -29,10 +29,10 @@ interface ObjectMetadataTreeBuilderInterface
      * @param string $attributeFqn       Fully qualified name of the attribute.
      * @param array  $attributeArguments Array of attribute arguments.
      *
-     * @return self
+     * @return static
      */
     public function addAttributeArgumentsNode(
         string $attributeFqn,
         array $attributeArguments
-    ): self;
+    ): static;
 }
