@@ -26,8 +26,8 @@ interface ObjectMetadataTreeBuilderInterface
      * Key of the node is the attribute fully qualified name.
      * Value is an object that has a property `attributeArguments` where the value of attribute arguments is stored.
      *
-     * @param string $attributeFqn
-     * @param array  $attributeArguments
+     * @param string $attributeFqn       Fully qualified name of the attribute.
+     * @param array  $attributeArguments Array of attribute arguments.
      *
      * @return self
      */

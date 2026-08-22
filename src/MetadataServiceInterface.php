@@ -18,14 +18,15 @@ interface MetadataServiceInterface
      * by a `SEPARATOR`.
      *
      * @param array|stdClass $metadataTree The metadata tree to search within.
-     * @param string         $path         The path string, represented as keys separated by a `SEPARATOR`.
+     * @param string         $path         The path string, represented as keys separated by a `SEPARATOR`. Example:
+     *                                     `key1->key2->key3`.
      *
      * @throws MetadataTreeException Throws an exception if the path is empty, the metadata tree is empty, the path
      *                               contains an empty segment, or the path cannot be resolved.
      *
      * @return mixed The value found at the specified path.
      */
-    public static function getByPath(
+    public static function getValueFromPath(
         array|stdClass $metadataTree,
         string $path
     ): mixed;
@@ -33,10 +34,11 @@ interface MetadataServiceInterface
     /**
      * Determines if the given path exists in a metadata tree.
      *
-     * @param array|object $metadataTree
-     * @param string       $path
+     * @param array|object $metadataTree The metadata tree to search within.
+     * @param string       $path         The path string, represented as keys separated by a `SEPARATOR`. Example:
+     *                                   `key1->key2->key3`.
      *
-     * @return bool
+     * @return bool True if the path exists in the metadata tree, false otherwise.
      */
     public static function hasPath(
         array|object $metadataTree,

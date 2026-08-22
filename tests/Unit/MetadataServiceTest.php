@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace ConstupFoss\PhpPropertyMetadata\Tests\Unit;
 
 use ConstupFoss\PhpPropertyMetadata\MetadataService;
-use ConstupFoss\PhpPropertyMetadata\Tests\Unit\DataProvider\MetadataService\GetByPathDataProvider;
+use ConstupFoss\PhpPropertyMetadata\Tests\Unit\DataProvider\MetadataService\GetValueFromPathDataProvider;
 use ConstupFoss\PhpPropertyMetadata\Tests\Unit\DataProvider\MetadataService\HasPathDataProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +14,7 @@ use stdClass;
 class MetadataServiceTest extends TestCase
 {
     #[DataProviderExternal(
-        GetByPathDataProvider::class,
+        GetValueFromPathDataProvider::class,
         'provide_HappyFlow'
     )]
     public function test_getByPath_HappyFlow(
@@ -23,13 +23,13 @@ class MetadataServiceTest extends TestCase
         mixed          $expected
     ): void {
         $class = new MetadataService();
-        $result = $class->getByPath($attributeArguments, $path);
+        $result = $class->getValueFromPath($attributeArguments, $path);
 
         $this->assertEquals($expected, $result);
     }
 
     #[DataProviderExternal(
-        GetByPathDataProvider::class,
+        GetValueFromPathDataProvider::class,
         'provide_ErrorFlow'
     )]
     public function test_getByPath_ErrorFlow(
@@ -42,7 +42,7 @@ class MetadataServiceTest extends TestCase
         $this->expectExceptionCode($expectedExceptionCode);
 
         $class = new MetadataService();
-        $class->getByPath($attributeArguments, $path);
+        $class->getValueFromPath($attributeArguments, $path);
     }
 
     #[DataProviderExternal(

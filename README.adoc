@@ -18,8 +18,11 @@ One example use case:
 If your property metadata is static, it's recommended to use PHP attributes to assign metadata. If you need to have
 dynamic metadata, you can use First Class Callables as attribute arguments (since PHP 8.5:
 link:https://wiki.php.net/rfc/fcc_in_const_expr[PHP RFC Wiki]). Assigning individual arguments during runtime when
-processing First Class Callables is relatively easy. Property metadata tree can be used when you need to assign
-arguments to the whole object (or a selected set of properties in it).
+processing First Class Callables is relatively easy. Property metadata tree can be used when you need to assign and
+process arguments in the whole object (or a selected set of properties in it).
+
+link:https://github.com/constup-foss/php-serializer[`constup-foss/php-serializer`] uses this library to apply attribute
+arguments at runtime, during serialization and deserialization processes.
 
 == Installation
 
@@ -27,6 +30,134 @@ arguments to the whole object (or a selected set of properties in it).
 ----
 composer require constup-foss/php-property-metadata
 ----
+
+== Contents of the library
+
+=== Core classes (interfaces provided)
+
+link:src/MetadataTreeBuilder.php[`MetadataTreeBuilder`] provides the base implementation of a tree. If you need custom
+nodes, custom interpretation of nodes or implementation of whole node segments that are specific to your needs, you can
+extend this class.
+
+link:src/MetadataService.php[`MetadataService`] contains helpful utilities to work with the tree, including getting a
+node value by path.
+
+=== Object metadata tree builder
+
+link:src/ObjectMetadataTreeBuilder.php[`ObjectMetadataTreeBuilder`] extends the core
+link:src/MetadataTreeBuilder.php[`MetadataTreeBuilder`] to provide additional predefined node structures suitable for
+handling classes and objects.
+
+== Use
+
+=== Getting started
+
+The base link:src/MetadataTreeBuilder.php[`MetadataTreeBuilder`] has a private `stdClass` property where the metadata
+tree is being stored. You can add nodes to the three with methods like `addNode` or `addMetadataNode`. You can then get
+the built tree by calling the `build()` method.
+
+[NOTE]
+====
+`MetadataTreeBuilder` is implemented in a way that, if you use propper identation of your code when building the tree,
+it will mimic the structure that you will get when you `json_encode` the resulting tree with `JSON_PRETTY_PRINT`. This
+makes it easy to visualize the result while you are writing code.
+====
+
+Example:
+
+[source,php]
+----
+use ConstupFoss\PhpPropertyMetadata\MetadataTreeBuilder;
+
+$treeBuilder = new MetadataTreeBuilder()
+    ->addNode('foo', function (MetadataTreeBuilder $builder): void {
+        $builder->addMetadataNode('bar', 42);
+    });
+$tree = $treeBuilder->build();
+
+$json = json_encode($tree, JSON_PRETTY_PRINT);
+var_dump($json);
+----
+
+Result:
+
+[source,text]
+----
+string(72) "{
+    "root": {
+        "foo": {
+            "bar": 42
+        }
+    }
+}
+----
+
+You can add multiple nodes at different depths:
+
+[source,php]
+----
+$tree = new MetadataTreeBuilder()
+    ->addNode('foo', function (MetadataTreeBuilder $builder): void {
+        $builder->addMetadataNode('bar', 42);
+    })
+    ->addNode('baz', function (MetadataTreeBuilder $builder): void {
+        $builder->addMetadataNode('fee', false);
+        $builder->addMetadataNode('fi', 'some string value');
+        $builder->addNode('fo', function (MetadataTreeBuilder $builder): void {
+            $builder->addMetadataNode('fum', 45.46);
+        });
+    })
+    ->build();
+
+$json = json_encode($tree, JSON_PRETTY_PRINT);
+var_dump($json);
+----
+
+Result:
+
+[source,json]
+----
+{
+    "root": {
+        "foo": {
+            "bar": 42
+        },
+        "baz": {
+            "fee": false,
+            "fi": "some string value",
+            "fo": {
+                "fum": 45.46
+            }
+        }
+    }
+}
+----
+
+== Documentation
+
+=== Docblock documentation
+
+Interfaces of classes in this library have their methods documented in docblocks. Available interfaces:
+
+* link:src/MetadataTreeBuilderInterface.php[`MetadataTreeBuilderInterface`]
+* link:src/MetadataServiceInterface.php[`MetadataServiceInterface`]
+* link:src/ObjectMetadataTreeBuilderInterface.php[`ObjectMetadataTreeBuilderInterface`]
+
+=== Examples in test cases
+
+PHPUnit tests are covering the code in this library. The tests are using external data providers for individual test
+cases (available in `DataProvider` test directories) where you can directly see the behavior of the code. Some IDEs
+(like PhpStorm) allow you to run each test case separately, directly from the data provider class.
+
+== Development
+
+This repository contains a minimalistic dockerized development environment that can be used to develop the library even
+without PHP being installed on the host machine. More details on how to set up and use the provided dockerized
+environment is available in the link:doc/projectinit/index.adoc[auto-generated ProjectInit documentation].
+
+== Contributing
+
+Contributing to this repository is limited to known collaborators only, to protect it from AI slop.
 
 == License
 

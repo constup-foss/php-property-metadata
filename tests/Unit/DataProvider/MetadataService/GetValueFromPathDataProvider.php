@@ -6,7 +6,7 @@ namespace ConstupFoss\PhpPropertyMetadata\Tests\Unit\DataProvider\MetadataServic
 
 use ConstupFoss\PhpPropertyMetadata\Exceptions\MetadataTreeException;
 
-readonly class GetByPathDataProvider
+readonly class GetValueFromPathDataProvider
 {
     public static function provide_HappyFlow(): array
     {

@@ -13,7 +13,7 @@ readonly class MetadataService implements MetadataServiceInterface
     /**
      * @inheritDoc
      */
-    public static function getByPath(
+    public static function getValueFromPath(
         array|stdClass $metadataTree,
         string $path
     ): mixed {
@@ -65,7 +65,7 @@ readonly class MetadataService implements MetadataServiceInterface
         string $path
     ): bool {
         try {
-            self::getByPath($metadataTree, $path);
+            self::getValueFromPath($metadataTree, $path);
 
             return true;
         } catch (ConstupFossPhpPropertyMetadataException) {
