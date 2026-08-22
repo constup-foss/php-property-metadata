@@ -10,8 +10,6 @@ use stdClass;
 
 class MetadataTreeBuilder implements MetadataTreeBuilderInterface
 {
-    public const string ARRAY_METADATA_KEY = '__arrayMetadata';
-
     private stdClass $metadata;
     private array $path = [];
 
@@ -68,6 +66,43 @@ class MetadataTreeBuilder implements MetadataTreeBuilderInterface
     }
 
     /**
+     * Descend into a child node.
+     *
+     * @param object       $node
+     * @param Closure|null $children
+     *
+     * @return static
+     */
+    protected function descendInto(
+        object $node,
+        ?Closure $children
+    ): static {
+        if ($children === null) {
+            return $this;
+        }
+
+        $this->path[] = $node;
+
+        try {
+            $children($this);
+        } finally {
+            array_pop($this->path);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the current node at the path.
+     *
+     * @return object
+     */
+    protected function getCurrentNode(): object
+    {
+        return $this->path[array_key_last($this->path)];
+    }
+
+    /**
      * Validate node name.
      * It is important for this validation to be more permissive than when validating a PHP property name.
      *
@@ -89,42 +124,5 @@ class MetadataTreeBuilder implements MetadataTreeBuilderInterface
         }
 
         throw new MetadataTreeException()->invalidNodeName();
-    }
-
-    /**
-     * Descend into a child node.
-     *
-     * @param object       $node
-     * @param Closure|null $children
-     *
-     * @return self
-     */
-    private function descendInto(
-        object $node,
-        ?Closure $children
-    ): self {
-        if ($children === null) {
-            return $this;
-        }
-
-        $this->path[] = $node;
-
-        try {
-            $children($this);
-        } finally {
-            array_pop($this->path);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get the current node at the path.
-     *
-     * @return object
-     */
-    private function getCurrentNode(): object
-    {
-        return $this->path[array_key_last($this->path)];
     }
 }
