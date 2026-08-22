@@ -81,9 +81,9 @@ var_dump($json);
 
 Result:
 
-[source,text]
+[source,json]
 ----
-string(72) "{
+{
     "root": {
         "foo": {
             "bar": 42
