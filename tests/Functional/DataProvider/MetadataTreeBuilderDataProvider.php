@@ -51,6 +51,46 @@ readonly class MetadataTreeBuilderDataProvider
                     ],
                 ],
             ],
+            /**
+             * If a duplicate node name is used when building the tree, given that two duplicated nodes are in the same
+             * scope and on the same depth, the second call will simply add elements to the already existing node.
+             */
+            'Duplicate node name.' => [
+                'builderFactory' => static fn (): MetadataTreeBuilder => new MetadataTreeBuilder()
+                    ->addNode('duplicate', function (MetadataTreeBuilder $builder): void {
+                        $builder->addMetadataNode('firstMetadata', false);
+                        $builder->addNode('firstSubnode');
+                    })
+                    ->addNode('sample', function (MetadataTreeBuilder $builder): void {
+                        $builder->addMetadataNode('sampleMetadata', false);
+                    })
+                    ->addNode('duplicate', function (MetadataTreeBuilder $builder): void {
+                        $builder->addMetadataNode('secondMetadata', false);
+                        $builder->addNode('secondSubnode');
+                        $builder->addMetadataNode('thirdMetadata', false);
+                        $builder->addNode('duplicate');
+                        $builder->addNode('firstSubnode', function (MetadataTreeBuilder $builder): void {
+                            $builder->addMetadataNode('addsThisToSubnode', 42);
+                        });
+                    }),
+                'expected' => (object)[
+                    'root' => (object)[
+                        'duplicate' => (object)[
+                            'firstMetadata' => false,
+                            'firstSubnode' => (object)[
+                                'addsThisToSubnode' => 42,
+                            ],
+                            'secondMetadata' => false,
+                            'secondSubnode' => (object)[],
+                            'thirdMetadata' => false,
+                            'duplicate' => (object)[],
+                        ],
+                        'sample' => (object)[
+                            'sampleMetadata' => false,
+                        ],
+                    ]
+                ],
+            ],
         ];
     }
 
